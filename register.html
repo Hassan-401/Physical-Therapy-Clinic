@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPC | Register</title>
+  <script>(function(){var l='ar';try{l=localStorage.getItem('spc_lang')||'ar';if(!sessionStorage.getItem('spc_intro'))document.documentElement.classList.add('show-intro');}catch(e){}var h=document.documentElement;h.lang=l;h.dir=l==='ar'?'rtl':'ltr';})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Manrope:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="auth-wrap">
+    <div class="auth-side" style="background-image:url('assets/img/image-7.jpg')">
+      <div><h2 data-i18n="login.sideTitle"></h2><p data-i18n="login.sideText"></p></div>
+    </div>
+    <div class="auth-form">
+      <div class="box" style="max-width:520px">
+        <h1 data-i18n="register.title"></h1>
+        <p class="muted" data-i18n="register.sub"></p>
+        <form id="reg-form" class="form-grid" style="margin-top:24px" novalidate>
+          <div class="field full"><label data-i18n="form.name"></label><input name="name" required autocomplete="name"></div>
+          <div class="field"><label data-i18n="form.email"></label><input name="email" type="email" required autocomplete="email"></div>
+          <div class="field"><label data-i18n="form.phone"></label><input name="phone" type="tel" required autocomplete="tel"></div>
+          <div class="field"><label data-i18n="form.dob"></label><input name="dob" type="date"></div>
+          <div class="field"><label data-i18n="form.gender"></label>
+            <select name="gender"><option value="male" data-i18n="gender.male"></option><option value="female" data-i18n="gender.female"></option></select>
+          </div>
+          <div class="field"><label data-i18n="form.password"></label><input name="password" type="password" required autocomplete="new-password"></div>
+          <div class="field"><label data-i18n="form.confirm"></label><input name="confirm" type="password" required autocomplete="new-password"></div>
+          <div class="full" id="reg-alert"></div>
+          <div class="full"><button class="btn btn-primary btn-block" type="submit"><i class="fa-solid fa-user-plus"></i><span data-i18n="register.btn"></span></button></div>
+        </form>
+        <p style="margin-top:18px"><span class="muted" data-i18n="register.have"></span> <a id="login-link" href="login.html" style="color:var(--blue);font-weight:700" data-i18n="nav.login"></a></p>
+        <p class="muted" style="font-size:.85rem"><i class="fa-solid fa-user-doctor"></i> <span data-i18n="login.staffNote"></span></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    (function () {
+      const next = SPC.qs('next');
+      const safeNext = next && /^[\w-]+\.html([?#].*)?$/.test(next) ? next : null;
+      if (safeNext) document.getElementById('login-link').href = 'login.html?next=' + encodeURIComponent(safeNext);
+
+      document.getElementById('reg-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const f = Object.fromEntries(new FormData(this));
+        const box = document.getElementById('reg-alert');
+        const fail = key => { box.innerHTML = `<div class="alert alert-error">${SPC.t(key)}</div>`; };
+        if (!f.name.trim() || !f.email.trim() || !f.phone.trim() || !f.password) return fail('form.required');
+        if (f.password.length < 6) return fail('register.short');
+        if (f.password !== f.confirm) return fail('register.mismatch');
+        try {
+          const u = Store.patients.register({ name: f.name.trim(), email: f.email.trim(), phone: f.phone.trim(), dob: f.dob, gender: f.gender, password: f.password });
+          SPC.auth.setSession(u.id);
+          SPC.toast(SPC.t('register.done'));
+          setTimeout(() => { location.href = safeNext || 'patient-dashboard.html'; }, 600);
+        } catch (err) {
+          fail(err.code === 'email_taken' ? 'register.exists' : 'form.required');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

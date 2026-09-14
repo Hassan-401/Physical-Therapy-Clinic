@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPC | Doctors</title>
+  <script>(function(){var l='ar';try{l=localStorage.getItem('spc_lang')||'ar';if(!sessionStorage.getItem('spc_intro'))document.documentElement.classList.add('show-intro');}catch(e){}var h=document.documentElement;h.lang=l;h.dir=l==='ar'?'rtl':'ltr';})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Manrope:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <div class="page-banner">
+      <img class="banner-bg" src="assets/img/image-7.jpg" alt="">
+      <div class="container">
+        <div class="crumbs"><a href="index.html" data-i18n="nav.home"></a><span>/</span><span data-i18n="nav.doctors"></span></div>
+        <h1 data-i18n="doctors.title"></h1>
+        <p data-i18n="doctors.sub"></p>
+      </div>
+    </div>
+
+    <section>
+      <div class="container">
+        <div class="field" style="max-width:420px;margin:0 auto 36px">
+          <input type="search" id="doc-search" data-i18n-placeholder="doctors.search">
+        </div>
+        <div class="grid grid-3" id="doctors-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/pages/doctors.js"></script>
+</body>
+</html>

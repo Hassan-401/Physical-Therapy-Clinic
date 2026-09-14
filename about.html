@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPC | About</title>
+  <script>(function(){var l='ar';try{l=localStorage.getItem('spc_lang')||'ar';if(!sessionStorage.getItem('spc_intro'))document.documentElement.classList.add('show-intro');}catch(e){}var h=document.documentElement;h.lang=l;h.dir=l==='ar'?'rtl':'ltr';})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Manrope:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <div class="page-banner">
+      <img class="banner-bg" src="assets/img/image-6.jpg" alt="">
+      <div class="container">
+        <div class="crumbs"><a href="index.html" data-i18n="nav.home"></a><span>/</span><span data-i18n="nav.about"></span></div>
+        <h1 data-i18n="about.title"></h1>
+        <p data-i18n="about.sub"></p>
+      </div>
+    </div>
+
+    <section>
+      <div class="container about-grid">
+        <div class="about-collage reveal">
+          <div class="tall" style="overflow:hidden;border-radius:var(--leaf)"><img src="assets/img/image-3.jpg" alt=""></div>
+          <div class="cell"><img src="assets/img/image-7.jpg" alt=""></div>
+          <div class="cell"><img src="assets/img/image-1.jpg" alt=""></div>
+        </div>
+        <div class="reveal">
+          <div class="section-head start" style="margin-bottom:20px">
+            <span class="kicker" data-i18n="about.kicker"></span>
+            <h2 data-i18n="about.storyTitle"></h2>
+          </div>
+          <p class="muted" data-i18n="about.p1"></p>
+          <p class="muted" data-i18n="about.p2"></p>
+          <a href="doctors.html" class="btn btn-primary" style="margin-top:10px"><i class="fa-solid fa-user-doctor"></i><span data-i18n="hero.cta2"></span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-alt">
+      <div class="container grid grid-3">
+        <div class="card feature reveal"><div class="ic ic-blue"><i class="fa-solid fa-bullseye"></i></div><h3 data-i18n="about.missionT"></h3><p data-i18n="about.missionD"></p></div>
+        <div class="card feature reveal"><div class="ic ic-teal"><i class="fa-regular fa-eye"></i></div><h3 data-i18n="about.visionT"></h3><p data-i18n="about.visionD"></p></div>
+        <div class="card feature reveal"><div class="ic ic-peach"><i class="fa-solid fa-hand-holding-heart"></i></div><h3 data-i18n="about.valuesT"></h3><p data-i18n="about.valuesD"></p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head reveal"><span class="kicker" data-i18n="about.numbersKicker"></span></div>
+        <div class="numbers reveal">
+          <div><b>+20</b><span data-i18n="about.n1"></span></div>
+          <div><b>+40K</b><span data-i18n="about.n2"></span></div>
+          <div><b id="doc-count">5</b><span data-i18n="about.n3"></span></div>
+          <div><b>98%</b><span data-i18n="about.n4"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-alt">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="kicker" data-i18n="about.galleryKicker"></span>
+          <h2 data-i18n="about.galleryTitle"></h2>
+        </div>
+        <div class="gallery reveal">
+          <figure class="tall"><img src="assets/img/image-5.jpg" alt=""></figure>
+          <figure class="wide"><img src="assets/img/image-2.jpg" alt=""></figure>
+          <figure class="tall"><img src="assets/img/image-6.jpg" alt=""></figure>
+          <figure><img src="assets/img/image-3.jpg" alt=""></figure>
+          <figure><img src="assets/img/image-8.jpg" alt=""></figure>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta reveal">
+          <div><h2 data-i18n="cta.title"></h2><p data-i18n="cta.text"></p></div>
+          <div class="btns">
+            <a href="book.html" class="btn btn-light"><i class="fa-regular fa-calendar-check"></i><span data-i18n="cta.book"></span></a>
+            <a href="contact.html" class="btn btn-teal"><i class="fa-regular fa-envelope"></i><span data-i18n="nav.contact"></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>window.renderPage = function () { document.getElementById('doc-count').textContent = Store.doctors.list().length; };</script>
+</body>
+</html>

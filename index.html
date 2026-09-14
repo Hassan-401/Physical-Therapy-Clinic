@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPC | Physical Therapy Clinic</title>
+  <meta name="description" content="SPC physical therapy & rehabilitation clinic in Nasr City, Cairo.">
+  <script>(function(){var l='ar';try{l=localStorage.getItem('spc_lang')||'ar';if(!sessionStorage.getItem('spc_intro'))document.documentElement.classList.add('show-intro');}catch(e){}var h=document.documentElement;h.lang=l;h.dir=l==='ar'?'rtl':'ltr';})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Manrope:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow"><i class="fa-solid fa-location-dot"></i><span data-i18n="hero.badge"></span></span>
+          <h1><span data-i18n="hero.title1"></span><br><span class="accent" data-i18n="hero.title2"></span></h1>
+          <p class="lead" data-i18n="hero.text"></p>
+          <div class="hero-actions">
+            <a href="book.html" class="btn btn-primary"><i class="fa-regular fa-calendar-check"></i><span data-i18n="hero.cta1"></span></a>
+            <a href="doctors.html" class="btn btn-outline"><i class="fa-solid fa-user-doctor"></i><span data-i18n="hero.cta2"></span></a>
+          </div>
+          <div class="hero-stats">
+            <div><b>+20</b><span data-i18n="hero.stat1"></span></div>
+            <div><b>+5K</b><span data-i18n="hero.stat2"></span></div>
+            <div><b id="doc-count">5</b><span data-i18n="hero.stat3"></span></div>
+          </div>
+        </div>
+        <div class="hero-media">
+          <div class="main-img"><img src="assets/img/hero.jpg" alt="Physiotherapy session"></div>
+          <div class="float-card one">
+            <span class="ic ic-teal"><i class="fa-regular fa-calendar-check"></i></span>
+            <div><b data-i18n="hero.card1t"></b><small data-i18n="hero.card1d"></small></div>
+          </div>
+          <div class="float-card two">
+            <span class="ic ic-peach"><i class="fa-solid fa-file-medical"></i></span>
+            <div><b data-i18n="hero.card2t"></b><small data-i18n="hero.card2d"></small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section>
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="kicker" data-i18n="feat.kicker"></span>
+          <h2 data-i18n="feat.title"></h2>
+          <p data-i18n="feat.sub"></p>
+        </div>
+        <div class="grid grid-4">
+          <div class="card feature reveal"><div class="ic ic-blue"><i class="fa-solid fa-user-doctor"></i></div><h3 data-i18n="feat1.t"></h3><p data-i18n="feat1.d"></p></div>
+          <div class="card feature reveal"><div class="ic ic-teal"><i class="fa-solid fa-wave-square"></i></div><h3 data-i18n="feat2.t"></h3><p data-i18n="feat2.d"></p></div>
+          <div class="card feature reveal"><div class="ic ic-peach"><i class="fa-solid fa-clipboard-list"></i></div><h3 data-i18n="feat3.t"></h3><p data-i18n="feat3.d"></p></div>
+          <div class="card feature reveal"><div class="ic ic-ink"><i class="fa-solid fa-laptop-medical"></i></div><h3 data-i18n="feat4.t"></h3><p data-i18n="feat4.d"></p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="section-alt">
+      <div class="container">
+        <div class="head-row">
+          <div class="section-head start reveal">
+            <span class="kicker" data-i18n="home.servicesKicker"></span>
+            <h2 data-i18n="home.servicesTitle"></h2>
+            <p data-i18n="home.servicesSub"></p>
+          </div>
+          <a href="services.html" class="btn btn-outline" data-i18n="home.allServices"></a>
+        </div>
+        <div class="grid grid-4" id="home-services"></div>
+      </div>
+    </section>
+
+    <!-- Doctors -->
+    <section>
+      <div class="container">
+        <div class="head-row">
+          <div class="section-head start reveal">
+            <span class="kicker" data-i18n="home.doctorsKicker"></span>
+            <h2 data-i18n="home.doctorsTitle"></h2>
+            <p data-i18n="home.doctorsSub"></p>
+          </div>
+          <a href="doctors.html" class="btn btn-outline" data-i18n="home.allDoctors"></a>
+        </div>
+        <div class="grid grid-4" id="home-doctors"></div>
+      </div>
+    </section>
+
+    <!-- Steps -->
+    <section class="section-alt">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="kicker" data-i18n="home.stepsKicker"></span>
+          <h2 data-i18n="home.stepsTitle"></h2>
+        </div>
+        <div class="grid grid-3 steps">
+          <div class="card step feature reveal"><div class="ic ic-blue"><i class="fa-solid fa-user-doctor"></i></div><h3 data-i18n="step1.t"></h3><p data-i18n="step1.d"></p></div>
+          <div class="card step feature reveal"><div class="ic ic-teal"><i class="fa-regular fa-clock"></i></div><h3 data-i18n="step2.t"></h3><p data-i18n="step2.d"></p></div>
+          <div class="card step feature reveal"><div class="ic ic-peach"><i class="fa-solid fa-heart-pulse"></i></div><h3 data-i18n="step3.t"></h3><p data-i18n="step3.d"></p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section>
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="kicker" data-i18n="home.testKicker"></span>
+          <h2 data-i18n="home.testTitle"></h2>
+        </div>
+        <div class="grid grid-3">
+          <div class="card card-shadow quote-card reveal"><div class="stars">★★★★★</div><p data-i18n="test1.text"></p><div class="who"><span class="avatar">HS</span><div><b data-i18n="test1.name"></b><small data-i18n="test1.case"></small></div></div></div>
+          <div class="card card-shadow quote-card reveal"><div class="stars">★★★★★</div><p data-i18n="test2.text"></p><div class="who"><span class="avatar">RF</span><div><b data-i18n="test2.name"></b><small data-i18n="test2.case"></small></div></div></div>
+          <div class="card card-shadow quote-card reveal"><div class="stars">★★★★★</div><p data-i18n="test3.text"></p><div class="who"><span class="avatar">MT</span><div><b data-i18n="test3.name"></b><small data-i18n="test3.case"></small></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section style="padding-top:0">
+      <div class="container">
+        <div class="cta reveal">
+          <div><h2 data-i18n="cta.title"></h2><p data-i18n="cta.text"></p></div>
+          <div class="btns">
+            <a href="book.html" class="btn btn-light"><i class="fa-regular fa-calendar-check"></i><span data-i18n="cta.book"></span></a>
+            <a href="tel:+201055566910" class="btn btn-teal"><i class="fa-solid fa-phone"></i><span data-i18n="cta.call"></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/pages/home.js"></script>
+</body>
+</html>

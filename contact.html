@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPC | Contact</title>
+  <script>(function(){var l='ar';try{l=localStorage.getItem('spc_lang')||'ar';if(!sessionStorage.getItem('spc_intro'))document.documentElement.classList.add('show-intro');}catch(e){}var h=document.documentElement;h.lang=l;h.dir=l==='ar'?'rtl':'ltr';})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Manrope:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <div class="page-banner">
+      <img class="banner-bg" src="assets/img/image-5.jpg" alt="">
+      <div class="container">
+        <div class="crumbs"><a href="index.html" data-i18n="nav.home"></a><span>/</span><span data-i18n="nav.contact"></span></div>
+        <h1 data-i18n="contact.title"></h1>
+        <p data-i18n="contact.sub"></p>
+      </div>
+    </div>
+
+    <section>
+      <div class="container contact-grid">
+        <div class="card card-shadow reveal">
+          <h2 style="font-size:1.3rem" data-i18n="contact.infoTitle"></h2>
+          <div class="info-item"><span class="ic ic-blue"><i class="fa-solid fa-phone"></i></span><div><small data-i18n="contact.phone"></small><a href="tel:+201055566910"><b class="num">01055566910</b></a></div></div>
+          <div class="info-item"><span class="ic ic-teal"><i class="fa-brands fa-whatsapp"></i></span><div><small data-i18n="contact.whatsapp"></small><a href="https://wa.me/201055566910" target="_blank" rel="noopener"><b class="num">01055566910</b></a></div></div>
+          <div class="info-item"><span class="ic ic-peach"><i class="fa-regular fa-envelope"></i></span><div><small data-i18n="contact.email"></small><a href="mailto:spc@info.com"><b class="num">spc@info.com</b></a></div></div>
+          <div class="info-item"><span class="ic ic-ink"><i class="fa-solid fa-location-dot"></i></span><div><small data-i18n="contact.address"></small><b data-i18n="contact.addressVal"></b></div></div>
+          <div class="info-item"><span class="ic ic-blue"><i class="fa-regular fa-clock"></i></span><div><small data-i18n="footer.hours"></small><b data-i18n="footer.hoursVal"></b><small data-i18n="footer.friday"></small></div></div>
+        </div>
+
+        <div class="card card-shadow reveal">
+          <h2 style="font-size:1.3rem" data-i18n="contact.formTitle"></h2>
+          <form id="contact-form" class="form-grid" novalidate>
+            <div class="field"><label data-i18n="form.name"></label><input name="name" required></div>
+            <div class="field"><label data-i18n="form.phone"></label><input name="phone" type="tel" required></div>
+            <div class="field"><label data-i18n="form.email"></label><input name="email" type="email"></div>
+            <div class="field"><label data-i18n="form.subject"></label><input name="subject"></div>
+            <div class="field full"><label data-i18n="form.message"></label><textarea name="message" required></textarea></div>
+            <div class="full" id="contact-alert"></div>
+            <div class="full"><button class="btn btn-primary" type="submit"><i class="fa-regular fa-paper-plane"></i><span data-i18n="form.send"></span></button></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-alt" style="padding-top:60px">
+      <div class="container">
+        <div class="head-row">
+          <div class="section-head start reveal">
+            <span class="kicker" data-i18n="contact.mapKicker"></span>
+            <h2 data-i18n="contact.mapTitle"></h2>
+          </div>
+          <a class="btn btn-outline" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Nasr+City+Cairo+Egypt"><i class="fa-solid fa-diamond-turn-right"></i><span data-i18n="contact.directions"></span></a>
+        </div>
+        <div class="map-wrap reveal">
+          <iframe title="SPC location" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Nasr+City,+Cairo,+Egypt&z=14&output=embed"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const f = Object.fromEntries(new FormData(this));
+      const alertBox = document.getElementById('contact-alert');
+      if (!f.name.trim() || !f.phone.trim() || !f.message.trim()) {
+        alertBox.innerHTML = `<div class="alert alert-error">${SPC.t('form.required')}</div>`;
+        return;
+      }
+      Store.messages.add(f);
+      this.reset();
+      alertBox.innerHTML = `<div class="alert alert-success">${SPC.t('contact.sent')}</div>`;
+    });
+  </script>
+</body>
+</html>
