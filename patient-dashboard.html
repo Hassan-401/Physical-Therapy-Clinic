@@ -20,6 +20,7 @@
       <nav class="dash-nav">
         <button data-tab="overview"><i class="fa-solid fa-house"></i><span data-i18n="dash.overview"></span></button>
         <button data-tab="appointments"><i class="fa-regular fa-calendar"></i><span data-i18n="dash.appointments"></span></button>
+        <button data-tab="progress"><i class="fa-solid fa-chart-line"></i><span data-i18n="dash.progress"></span><span class="count" id="fb-count"></span></button>
         <button data-tab="records"><i class="fa-solid fa-file-medical"></i><span data-i18n="dash.records"></span></button>
         <button data-tab="meds"><i class="fa-solid fa-pills"></i><span data-i18n="dash.meds"></span></button>
         <button data-tab="profile"><i class="fa-regular fa-id-card"></i><span data-i18n="dash.profile"></span></button>
@@ -28,6 +29,7 @@
     <div class="dash-main">
       <div data-pane="overview"></div>
       <div data-pane="appointments" class="hidden"></div>
+      <div data-pane="progress" class="hidden"></div>
       <div data-pane="records" class="hidden"></div>
       <div data-pane="meds" class="hidden"></div>
       <div data-pane="profile" class="hidden"></div>
@@ -38,6 +40,7 @@
   <script src="assets/js/data.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/dash.js"></script>
+  <script src="assets/js/cases.js"></script>
   <script src="assets/js/pages/patient.js"></script>
 </body>
 </html>

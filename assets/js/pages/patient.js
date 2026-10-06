@@ -12,8 +12,22 @@
     const past = appts.filter(a => !DASH.isUpcoming(a)).reverse();
     const records = Store.records.forPatient(me.id);
     const medsCount = records.reduce((n, r) => n + (r.medications || []).length, 0);
+    const cases = Store.cases.list({ patientId: me.id });
+    const pending = cases.filter(c => c.status === 'active').flatMap(c => c.sessions.filter(s => !s.feedback).map(s => ({ c, s })));
+    document.getElementById('fb-count').textContent = pending.length || '';
 
     document.getElementById('dash-user').innerHTML = DASH.userBox(me);
+
+    // prepaid package
+    const sub = Store.billing.activeSubscription(me.id);
+    const unpaid = appts.filter(a => a.payment === 'cash' && a.status === 'completed' && !a.paid).reduce((n, a) => n + a.price, 0);
+    const pkgPanel = sub ? `<div class="panel pkg-panel">
+        <div class="panel-head"><h2><i class="fa-solid fa-ticket"></i> ${t('pkg.mine')}</h2><span class="badge badge-package">${esc(L(sub.name))}</span></div>
+        <div class="pkg-meter"><span style="width:${Math.round(sub.used / sub.sessions * 100)}%"></span></div>
+        <p style="margin:10px 0 0">${t('book.sessionsLeft').replace('{n}', `<b class="num">${sub.sessions - sub.used}</b>`).replace('{t}', `<span class="num">${sub.sessions}</span>`)}
+          · ${t('book.validUntil')} <b>${SPC.fmtDate(sub.expiresAt)}</b></p>
+        <small class="muted">${t('pkg.prepaidNote')}</small>
+      </div>` : '';
 
     // overview
     const next = upcoming[0];
@@ -24,13 +38,17 @@
         ${DASH.stat('fa-calendar-check', 'ic-blue', upcoming.length, 'stat.upcoming')}
         ${DASH.stat('fa-calendar-days', 'ic-teal', appts.length, 'stat.totalAppts')}
         ${DASH.stat('fa-file-medical', 'ic-peach', records.length, 'stat.records')}
-        ${DASH.stat('fa-pills', 'ic-ink', medsCount, 'stat.meds')}
+        ${sub ? DASH.stat('fa-ticket', 'ic-ink', sub.sessions - sub.used, 'stat.pkgLeft') : DASH.stat('fa-pills', 'ic-ink', medsCount, 'stat.meds')}
       </div>
+      ${unpaid ? `<div class="alert alert-info" style="margin-bottom:20px"><i class="fa-solid fa-money-bill-wave"></i> ${t('pay.youOwe')} ${SPC.money(unpaid)}</div>` : ''}
+      ${pkgPanel}
+      ${pending.length ? `<div class="alert alert-info fb-alert"><i class="fa-regular fa-comment-dots"></i><span>${t('case.pendingAlert').replace('{n}', pending.length)}</span>
+        <a class="btn btn-teal btn-sm" href="case.html?id=${pending[0].c.id}#s-${pending[0].s.id}">${t('case.giveFeedback')}</a></div>` : ''}
       <div class="panel">
         <div class="panel-head"><h2>${t('dash.nextAppt')}</h2></div>
         ${next ? `<div class="med" style="grid-template-columns:auto 1fr auto">
             <span class="pill" style="background:var(--blue-l);color:var(--blue)"><i class="fa-regular fa-calendar-check"></i></span>
-            <div><b>${esc(DASH.docName(next.doctorId))}</b><small>${esc(DASH.svcName(next.service))}</small></div>
+            <div><b>${esc(DASH.docName(next.doctorId))}</b><small>${esc(DASH.svcName(next.service))} · ${SPC.payBadge(next)}</small></div>
             <div style="text-align:end"><b>${SPC.fmtDate(next.date)}</b><small class="num">${SPC.fmtTime(next.time)}</small></div>
           </div>` : `<p class="muted" style="margin:0">${t('dash.noNext')}</p>`}
       </div>
@@ -53,6 +71,11 @@
         </div>
         ${DASH.apptTable(list, { who: 'doctor', role: 'patient' })}
       </div>`;
+
+    pane('progress').innerHTML = `
+      <div class="dash-title"><h1>${t('dash.progress')}</h1></div>
+      <p class="muted" style="margin:-10px 0 20px">${t('case.patientIntro')}</p>
+      ${cases.length ? `<div class="case-grid">${cases.map(c => CASES.caseCard(c, { showPatient: false })).join('')}</div>` : `<div class="panel">${SPC.empty('dash.noData', 'fa-chart-line')}</div>`}`;
 
     pane('records').innerHTML = `<div class="dash-title"><h1>${t('dash.records')}</h1></div><div class="panel">${DASH.recordsHTML(records)}</div>`;
     pane('meds').innerHTML = `<div class="dash-title"><h1>${t('dash.meds')}</h1></div><div class="panel">${DASH.medsHTML(records)}</div>`;

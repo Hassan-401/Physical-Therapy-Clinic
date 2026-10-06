@@ -142,10 +142,14 @@
         ${DASH.stat('fa-calendar-day', 'ic-peach', appts.filter(a => a.date === today && a.status !== 'cancelled').length, 'stat.today')}
         ${DASH.stat('fa-envelope', 'ic-ink', messages.length, 'stat.messages')}
       </div>
+      ${FIN.overviewCards()}
       <div class="panel">
         <div class="panel-head"><h2>${t('dash.upcoming')}</h2></div>
         ${DASH.apptTable(upcoming.slice(0, 8), { who: 'both', role: 'admin' })}
       </div>`;
+
+    FIN.drawFinance(pane('finance'));
+    FIN.drawBilling(pane('billing'));
 
     pane('doctors').innerHTML = `
       <div class="dash-title"><h1>${t('dash.doctors')}</h1><button class="btn btn-primary" id="add-doctor"><i class="fa-solid fa-user-plus"></i>${t('admin.addDoctor')}</button></div>
@@ -182,6 +186,12 @@
         ${DASH.apptTable(list, { who: 'both', role: 'admin' })}
       </div>`;
 
+    pane('cases').innerHTML = `
+      <div class="dash-title"><h1>${t('dash.cases')}</h1>
+        <button class="btn btn-primary" data-new-case><i class="fa-solid fa-folder-plus"></i>${t('case.new')}</button></div>
+      <div class="panel" id="cases-list"></div>`;
+    CASES.mountList(document.getElementById('cases-list'), () => Store.cases.list());
+
     pane('messages').innerHTML = `
       <div class="dash-title"><h1>${t('dash.messages')}</h1></div>
       <div class="panel">${messages.length ? messages.map(msg => `
@@ -198,6 +208,7 @@
   /* ---------- events (bound once) ---------- */
   const main = document.querySelector('.dash-main');
   DASH.bindApptActions(main, draw);
+  FIN.bind(main, draw);
   main.addEventListener('click', e => {
     const q = s => e.target.closest(s);
     let el;
@@ -206,6 +217,7 @@
     else if ((el = q('[data-del-doc]'))) SPC.confirm(t('admin.deleteDoctor'), () => { Store.doctors.remove(el.dataset.delDoc); SPC.toast(t('admin.deleted')); draw(); });
     else if ((el = q('[data-del-msg]'))) SPC.confirm(t('dash.confirmTitle'), () => { Store.messages.remove(el.dataset.delMsg); draw(); });
     else if ((el = q('[data-filter]'))) { state.appt = el.dataset.filter; draw(); }
+    else if (q('[data-new-case]')) CASES.caseModal({ onSaved: c => { location.href = 'case.html?id=' + c.id; } });
     else if (q('#reset-demo')) SPC.confirm(t('admin.resetConfirm'), () => {
       Store.reset();
       SPC.auth.setSession('u_admin');

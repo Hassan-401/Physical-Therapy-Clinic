@@ -5,7 +5,7 @@
    ========================================================= */
 (function () {
   const DB_KEY = 'spc_db';
-  const DB_VERSION = 3;
+  const DB_VERSION = 8;
 
   const pad = n => String(n).padStart(2, '0');
   const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -66,6 +66,28 @@
     }
   ];
 
+  /* ---------- Symptom catalog (used for classification & search) ---------- */
+  const SYMPTOMS = [
+    { key: 'headache', en: 'Headache', ar: 'صداع' },
+    { key: 'neck_pain', en: 'Neck pain', ar: 'ألم الرقبة' },
+    { key: 'low_back_pain', en: 'Lower back pain', ar: 'ألم أسفل الظهر' },
+    { key: 'sciatica', en: 'Sciatica / leg radiation', ar: 'عرق النسا / ألم ممتد للساق' },
+    { key: 'shoulder_pain', en: 'Shoulder pain', ar: 'ألم الكتف' },
+    { key: 'knee_pain', en: 'Knee pain', ar: 'ألم الركبة' },
+    { key: 'hip_pain', en: 'Hip pain', ar: 'ألم الحوض والفخذ' },
+    { key: 'ankle_pain', en: 'Ankle pain', ar: 'ألم الكاحل' },
+    { key: 'stiffness', en: 'Joint stiffness', ar: 'تيبس المفاصل' },
+    { key: 'swelling', en: 'Swelling', ar: 'تورم' },
+    { key: 'weakness', en: 'Muscle weakness', ar: 'ضعف العضلات' },
+    { key: 'numbness', en: 'Numbness / tingling', ar: 'تنميل / وخز' },
+    { key: 'spasm', en: 'Muscle spasm', ar: 'تقلص عضلي' },
+    { key: 'dizziness', en: 'Dizziness', ar: 'دوخة' },
+    { key: 'balance', en: 'Balance problems', ar: 'مشاكل الاتزان' },
+    { key: 'walking', en: 'Difficulty walking', ar: 'صعوبة المشي' },
+    { key: 'limited_rom', en: 'Limited range of motion', ar: 'محدودية الحركة' },
+    { key: 'fatigue', en: 'Fatigue', ar: 'إرهاق' }
+  ];
+
   /* ---------- Seed ---------- */
   function seed() {
     const now = new Date().toISOString();
@@ -79,7 +101,7 @@
         doctor: {
           name: { en: 'Dr. Ahmed Mostafa', ar: 'د. أحمد مصطفى' },
           specialty: { en: 'Orthopedic & Sports Physiotherapy', ar: 'علاج طبيعي العظام والإصابات الرياضية' },
-          age: 45, years: 20, photo: 'https://randomuser.me/api/portraits/men/32.jpg',
+          age: 45, years: 20, photo: 'assets/img/doctors/ahmed-mostafa.jpg',
           university: { en: 'Cairo University', ar: 'جامعة القاهرة' },
           bio: { en: 'Consultant physiotherapist with two decades of experience treating athletes and orthopedic cases. Former physiotherapist for a Premier League football club and lecturer in sports rehabilitation.', ar: 'استشاري علاج طبيعي بخبرة عشرين عاماً في علاج الرياضيين وحالات العظام. عمل أخصائياً للعلاج الطبيعي لأحد أندية الدوري الممتاز ومحاضراً في تأهيل الإصابات الرياضية.' },
           languages: { en: 'Arabic, English', ar: 'العربية، الإنجليزية' },
@@ -110,7 +132,7 @@
         doctor: {
           name: { en: 'Dr. Mariam Adel', ar: 'د. مريم عادل' },
           specialty: { en: 'Neurological Rehabilitation', ar: 'تأهيل المخ والأعصاب' },
-          age: 38, years: 14, photo: 'https://randomuser.me/api/portraits/women/44.jpg',
+          age: 38, years: 14, photo: 'assets/img/doctors/mariam-adel.jpg',
           university: { en: 'Cairo University', ar: 'جامعة القاهرة' },
           bio: { en: 'Specialist in stroke and spinal cord injury rehabilitation. Passionate about helping patients regain independence through task-oriented training and balance programmes.', ar: 'متخصصة في تأهيل الجلطات الدماغية وإصابات الحبل الشوكي. شغوفة بمساعدة المرضى على استعادة استقلاليتهم من خلال التدريب الوظيفي وبرامج الاتزان.' },
           languages: { en: 'Arabic, English, French', ar: 'العربية، الإنجليزية، الفرنسية' },
@@ -139,7 +161,7 @@
         doctor: {
           name: { en: 'Dr. Karim Hassan', ar: 'د. كريم حسن' },
           specialty: { en: 'Spine & Manual Therapy', ar: 'العمود الفقري والعلاج اليدوي' },
-          age: 41, years: 16, photo: 'https://randomuser.me/api/portraits/men/46.jpg',
+          age: 41, years: 16, photo: 'assets/img/doctors/karim-hassan.jpg',
           university: { en: 'Beni-Suef University', ar: 'جامعة بني سويف' },
           bio: { en: 'Manual therapist focused on neck and back pain, disc problems and posture. Combines joint mobilisation, dry needling and targeted exercise for long-lasting results.', ar: 'معالج يدوي متخصص في آلام الرقبة والظهر ومشاكل الغضاريف والقوام. يجمع بين تحريك المفاصل والإبر الجافة والتمارين الموجهة لنتائج تدوم.' },
           languages: { en: 'Arabic, English', ar: 'العربية، الإنجليزية' },
@@ -169,7 +191,7 @@
         doctor: {
           name: { en: 'Dr. Nour El-Sayed', ar: 'د. نور السيد' },
           specialty: { en: 'Pediatric Physiotherapy', ar: 'العلاج الطبيعي للأطفال' },
-          age: 34, years: 10, photo: 'https://randomuser.me/api/portraits/women/65.jpg',
+          age: 34, years: 10, photo: 'assets/img/doctors/nour-elsayed.jpg',
           university: { en: 'Misr University for Science & Technology', ar: 'جامعة مصر للعلوم والتكنولوجيا' },
           bio: { en: 'Pediatric physiotherapist who makes therapy feel like play. Works with children with developmental delay, cerebral palsy and orthopedic conditions, and coaches parents on home programmes.', ar: 'أخصائية علاج طبيعي أطفال تجعل الجلسة أشبه باللعب. تعمل مع الأطفال ذوي تأخر النمو والشلل الدماغي وحالات العظام، وتدرب الأهل على البرامج المنزلية.' },
           languages: { en: 'Arabic, English', ar: 'العربية، الإنجليزية' },
@@ -294,11 +316,208 @@
       }
     ];
 
+    // Case files: examination, investigations, symptoms and per-session follow-up.
+    // Severity scale 0 (none) – 10 (worst). ratings = doctor's assessment, feedback = patient's own report.
+    const S = (key, baseline) => ({ key, name: '', baseline });
+    const sess = (no, date, ratings, treatment, notes, feedback) => ({ id: 's' + no + '_' + Math.random().toString(36).slice(2, 6), no, date, ratings, treatment, notes, feedback: feedback || null });
+    const fb = (date, ratings, overall, comment) => ({ date, ratings, overall, comment });
+    const D = n => ymd(addDays(n));
+    const cases = [
+      {
+        id: 'c1', patientId: 'p1', doctorId: 'd1', status: 'active', startDate: appointments[0].date,
+        title: 'Patellar tendinopathy (right knee)',
+        symptoms: [S('knee_pain', 7), S('swelling', 5), S('stiffness', 6)],
+        exam: {
+          complaint: 'Pain below the right kneecap when running, jumping and climbing stairs for 2 months.',
+          history: 'Amateur footballer, 3 matches weekly. No previous surgery.',
+          findings: 'Tenderness at inferior pole of patella. Single-leg squat painful at 60°. Mild effusion. Quadriceps strength 4/5.',
+          rom: 'Knee flexion 125° (left 140°), full extension.',
+          notes: 'Avoid jumping until reassessment.'
+        },
+        tests: [
+          { id: 't1', type: 'us', name: 'Ultrasound — right knee', date: appointments[0].date, result: 'Thickened patellar tendon with hypoechoic area at proximal insertion. No tear.' },
+          { id: 't2', type: 'xray', name: 'X-ray — right knee (AP/Lateral)', date: D(-45), result: 'No bony abnormality.' }
+        ],
+        sessions: [
+          sess(1, D(-38), { knee_pain: 7, swelling: 5, stiffness: 6 }, 'Shockwave (2000 shots), isometric quads, ice', 'Tolerated well.', fb(D(-37), { knee_pain: 6, swelling: 5, stiffness: 5 }, 'better', 'Less pain the next morning.')),
+          sess(2, D(-31), { knee_pain: 6, swelling: 4, stiffness: 5 }, 'Shockwave, eccentric decline squats 3x15', '', fb(D(-30), { knee_pain: 6, swelling: 3, stiffness: 5 }, 'same', 'Stairs still painful.')),
+          sess(3, D(-24), { knee_pain: 4, swelling: 2, stiffness: 4 }, 'Shockwave, eccentric progression, hip strengthening', 'Swelling much improved.', fb(D(-23), { knee_pain: 4, swelling: 2, stiffness: 3 }, 'better', 'Can climb stairs with little pain.')),
+          sess(4, D(-17), { knee_pain: 3, swelling: 1, stiffness: 3 }, 'Plyometric intro, single-leg control', 'Start light jogging.', null)
+        ]
+      },
+      {
+        id: 'c2', patientId: 'p1', doctorId: 'd3', status: 'active', startDate: appointments[2].date,
+        title: 'Mechanical low back pain with cervicogenic headache',
+        symptoms: [S('low_back_pain', 8), S('spasm', 7), S('headache', 6), S('neck_pain', 5)],
+        exam: {
+          complaint: 'Lower back pain after long sitting at work, with headaches starting from the neck by the end of the day.',
+          history: 'Desk job 9 hours daily. Poor posture. No trauma.',
+          findings: 'Paraspinal spasm L3–L5, forward head posture, tender upper trapezius and suboccipitals. SLR negative.',
+          rom: 'Lumbar flexion limited 50%. Cervical rotation 60° both sides.',
+          notes: 'Ergonomic advice given.'
+        },
+        tests: [
+          { id: 't3', type: 'mri', name: 'MRI — lumbar spine', date: D(-14), result: 'Mild L4–L5 disc bulge without nerve root compression.' }
+        ],
+        sessions: [
+          sess(1, D(-9), { low_back_pain: 8, spasm: 7, headache: 6, neck_pain: 5 }, 'Manual therapy, TENS, suboccipital release', '', fb(D(-8), { low_back_pain: 6, spasm: 6, headache: 5, neck_pain: 4 }, 'better', 'Headache was lighter today.')),
+          sess(2, D(-5), { low_back_pain: 6, spasm: 4, headache: 4, neck_pain: 4 }, 'Mobilisation, core activation, chin tucks', 'Home exercise sheet given.', fb(D(-4), { low_back_pain: 5, spasm: 4, headache: 3, neck_pain: 3 }, 'better', '')),
+          sess(3, D(-2), { low_back_pain: 4, spasm: 3, headache: 2, neck_pain: 3 }, 'Dry needling upper trapezius, core progression', '', null)
+        ]
+      },
+      {
+        id: 'c3', patientId: 'p2', doctorId: 'd2', status: 'active', startDate: appointments[6].date,
+        title: 'Peripheral neuropathy — balance deficit',
+        symptoms: [S('balance', 7), S('numbness', 8), S('dizziness', 5), S('walking', 6)],
+        exam: {
+          complaint: 'Unsteady walking and tingling in both feet for 6 months, occasional dizziness when standing up.',
+          history: 'Vitamin B12 deficiency diagnosed 8 months ago.',
+          findings: 'Reduced light-touch sensation both feet (stocking pattern). Romberg positive. Berg balance 44/56.',
+          rom: 'Full.', notes: 'Fall-risk education.'
+        },
+        tests: [
+          { id: 't4', type: 'lab', name: 'Vitamin B12 level', date: D(-20), result: '180 pg/mL (low).' },
+          { id: 't5', type: 'other', name: 'Nerve conduction study', date: D(-18), result: 'Mild sensory axonal polyneuropathy.' }
+        ],
+        sessions: [
+          sess(1, D(-13), { balance: 7, numbness: 8, dizziness: 5, walking: 6 }, 'Balance board, gait training, sensory stimulation', '', fb(D(-12), { balance: 7, numbness: 8, dizziness: 4, walking: 6 }, 'same', 'Tired after the session.')),
+          sess(2, D(-8), { balance: 6, numbness: 7, dizziness: 3, walking: 5 }, 'Tandem walking, proprioception drills', 'Berg 47/56.', fb(D(-7), { balance: 5, numbness: 7, dizziness: 3, walking: 5 }, 'better', 'I feel more confident walking.'))
+        ]
+      },
+      {
+        id: 'c4', patientId: 'p3', doctorId: 'd5', status: 'active', startDate: appointments[7].date,
+        title: 'Post total knee replacement (left)',
+        symptoms: [S('knee_pain', 6), S('limited_rom', 8), S('walking', 8), S('swelling', 6)],
+        exam: {
+          complaint: 'Pain and stiffness 3 weeks after left total knee replacement; walking with a walker.',
+          history: 'TKR 3 weeks ago. Type 2 diabetes controlled on tablets.',
+          findings: 'Healed wound, moderate swelling, quadriceps lag 10°.',
+          rom: 'Flexion 85°, extension −5°.', notes: 'Check blood sugar before sessions.'
+        },
+        tests: [
+          { id: 't6', type: 'xray', name: 'X-ray — left knee post-op', date: D(-25), result: 'Well-positioned prosthesis.' },
+          { id: 't7', type: 'lab', name: 'HbA1c', date: D(-25), result: '6.9%.' }
+        ],
+        sessions: [
+          sess(1, D(-19), { knee_pain: 6, limited_rom: 8, walking: 8, swelling: 6 }, 'ROM exercises, quads sets, cryotherapy', 'Flexion 85°.', fb(D(-18), { knee_pain: 6, limited_rom: 8, walking: 7, swelling: 6 }, 'same', '')),
+          sess(2, D(-12), { knee_pain: 5, limited_rom: 6, walking: 6, swelling: 4 }, 'Stationary bike, step-ups, gait with cane', 'Flexion 98°.', fb(D(-11), { knee_pain: 4, limited_rom: 6, walking: 5, swelling: 4 }, 'better', 'Walking with a cane now.')),
+          sess(3, D(-5), { knee_pain: 3, limited_rom: 4, walking: 4, swelling: 3 }, 'Strengthening, balance, stairs practice', 'Flexion 110°.', null)
+        ]
+      },
+      {
+        id: 'c5', patientId: 'p2', doctorId: 'd3', status: 'closed', startDate: D(-90),
+        title: 'Tension-type headache with neck strain',
+        symptoms: [S('headache', 7), S('neck_pain', 6), S('stiffness', 5)],
+        exam: {
+          complaint: 'Daily band-like headache with neck stiffness after long hours on the laptop.',
+          history: 'Office work, stress. Neurologist excluded migraine.',
+          findings: 'Tender upper trapezius & levator scapulae, forward head posture.',
+          rom: 'Cervical rotation 55° both sides.', notes: ''
+        },
+        tests: [{ id: 't8', type: 'xray', name: 'X-ray — cervical spine', date: D(-92), result: 'Straightening of cervical lordosis.' }],
+        sessions: [
+          sess(1, D(-85), { headache: 7, neck_pain: 6, stiffness: 5 }, 'Soft tissue release, posture correction', '', fb(D(-84), { headache: 6, neck_pain: 5, stiffness: 5 }, 'better', '')),
+          sess(2, D(-78), { headache: 4, neck_pain: 4, stiffness: 3 }, 'Dry needling, deep neck flexor training', '', fb(D(-77), { headache: 4, neck_pain: 3, stiffness: 3 }, 'better', 'Headaches only twice this week.')),
+          sess(3, D(-71), { headache: 1, neck_pain: 1, stiffness: 1 }, 'Home program review, discharge', 'Discharged — goals achieved.', fb(D(-70), { headache: 1, neck_pain: 1, stiffness: 0 }, 'better', 'Thank you, almost no headaches now!'))
+        ]
+      }
+    ];
+
     const messages = [
       { id: 'm1', name: 'Mona Adel', email: 'mona@example.com', phone: '01011112222', subject: 'Home visits', message: 'Do you offer home physiotherapy sessions for elderly patients?', createdAt: addDays(-2).toISOString() }
     ];
 
-    return { version: DB_VERSION, users, appointments, records, messages };
+    /* ---------- Billing: prices, packages, history ---------- */
+    const settings = {
+      consultFee: 300,
+      prices: { ortho: 250, sports: 300, neuro: 300, pediatric: 250, spine: 250, postop: 300, manual: 250, electro: 200 },
+      packages: [
+        { id: 'pk6', name: { en: '6-session package', ar: 'باقة ٦ جلسات' }, sessions: 6, price: 1350, days: 60 },
+        { id: 'pk12', name: { en: '12-session package', ar: 'باقة ١٢ جلسة' }, sessions: 12, price: 2520, days: 90 },
+        { id: 'pk24', name: { en: '24-session package', ar: 'باقة ٢٤ جلسة' }, sessions: 24, price: 4560, days: 150 }
+      ]
+    };
+
+    // deterministic pseudo-random so the demo looks the same on every reset
+    let s0 = 20241006;
+    const rnd = () => { s0 = (s0 * 1103515245 + 12345) % 2147483648; return s0 / 2147483648; };
+    const pick = arr => arr[Math.floor(rnd() * arr.length)];
+
+    const extraNames = ['Ahmed Samir', 'Mona Fathy', 'Hany Adel', 'Reem Tarek', 'Mostafa Gamal', 'Dina Ashraf', 'Omar Salah', 'Heba Lotfy', 'Tamer Hosny', 'Nada Sherif', 'Islam Magdy', 'Yasmin Fouad',
+      'Mahmoud Ragab', 'Salma Ezzat', 'Karim Wagdy', 'Aya Hamdy', 'Sherif Mounir', 'Laila Nasser', 'Hassan Barakat', 'Noha Kamal', 'Adel Sabry', 'Rana Hegazy', 'Walid Zaki', 'Marwa Saad'];
+    extraNames.forEach((name, i) => users.push({
+      id: 'p' + (i + 4), role: 'patient', password: 'patient123', email: name.split(' ')[0].toLowerCase() + (i + 4) + '@example.com', name,
+      phone: '010' + String(20000000 + i * 734521).slice(0, 8), dob: `${1960 + Math.floor(rnd() * 45)}-0${1 + (i % 9)}-1${i % 9}`,
+      gender: i % 2 ? 'female' : 'male', bloodType: '', address: 'Nasr City, Cairo', conditions: '', allergies: '', emergency: '',
+      createdAt: ymd(addDays(-178 + i * 2))
+    }));
+    const docServices = { d1: ['sports', 'ortho', 'electro'], d2: ['neuro'], d3: ['spine', 'manual'], d4: ['pediatric'], d5: ['postop', 'ortho'] };
+    const taken = new Set(appointments.map(a => `${a.doctorId}|${a.date}|${a.time}`));
+    for (let off = -175; off <= -1; off++) {
+      const day = addDays(off);
+      doctors.forEach(d => {
+        const sch = d.doctor.schedule;
+        if (!sch.days.includes(day.getDay())) return;
+        const n = 1 + Math.floor(rnd() * 4); // 1-4 visits per doctor per day
+        for (let k = 0; k < n; k++) {
+          const slots = Math.floor((toMin(sch.end) - toMin(sch.start)) / sch.slot);
+          const time = toTime(toMin(sch.start) + Math.floor(rnd() * slots) * sch.slot);
+          const key = `${d.id}|${ymd(day)}|${time}`;
+          if (taken.has(key)) continue;
+          taken.add(key);
+          const pid = 'p' + (4 + Math.floor(rnd() * extraNames.length));
+          if (ymd(day) < users.find(u => u.id === pid).createdAt) continue;
+          appointments.push({ id: 'g' + appointments.length, patientId: pid, doctorId: d.id, date: ymd(day), time, service: pick(docServices[d.id]),
+            status: rnd() < 0.08 ? 'cancelled' : 'completed', notes: '', createdAt: now });
+        }
+      });
+    }
+
+    // package subscriptions (bought at reception)
+    const sub = (id, patientId, packageId, offset) => {
+      const pk = settings.packages.find(p => p.id === packageId);
+      return { id, patientId, packageId, name: pk.name, sessions: pk.sessions, price: pk.price, purchasedAt: D(offset), expiresAt: D(offset + pk.days) };
+    };
+    const subscriptions = [
+      sub('sub1', 'p1', 'pk12', -45), sub('sub2', 'p3', 'pk24', -25),
+      sub('sub3', 'p5', 'pk6', -150), sub('sub4', 'p7', 'pk12', -110), sub('sub5', 'p9', 'pk6', -70),
+      sub('sub6', 'p11', 'pk12', -40), sub('sub7', 'p13', 'pk24', -130), sub('sub8', 'p6', 'pk6', -20)
+    ];
+
+    // price every visit chronologically: first visit with a doctor = consultation, then sessions;
+    // visits inside a valid package are prepaid.
+    appointments.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    const today = ymd(new Date());
+    appointments.forEach(a => {
+      const seen = appointments.some(x => x !== a && x.patientId === a.patientId && x.doctorId === a.doctorId && x.status !== 'cancelled' && (x.date + x.time) < (a.date + a.time));
+      a.kind = seen ? 'session' : 'consult';
+      a.price = seen ? settings.prices[a.service] : settings.consultFee;
+      const s = a.status !== 'cancelled' && subscriptions.find(x => x.patientId === a.patientId && x.purchasedAt <= a.date && x.expiresAt >= a.date &&
+        appointments.filter(y => y.subscriptionId === x.id).length < x.sessions);
+      if (s) { a.payment = 'package'; a.subscriptionId = s.id; a.price = 0; a.paid = true; a.paidAt = s.purchasedAt; }
+      else {
+        a.payment = 'cash';
+        // a few recent visits are left unpaid to show outstanding balances
+        a.paid = a.status === 'completed' && !(a.date >= D(-12) && rnd() < 0.35);
+        a.paidAt = a.paid ? a.date : null;
+      }
+      if (a.date >= today && a.status === 'confirmed' && a.payment === 'cash') { a.paid = false; a.paidAt = null; }
+    });
+
+    const expenses = [];
+    for (let m = 5; m >= 0; m--) {
+      const first = new Date(); first.setMonth(first.getMonth() - m, 1);
+      const day = n => { const d = new Date(first); d.setDate(n); return d > new Date() ? null : ymd(d); };
+      const E = (n, category, amount, note) => { const date = day(n); if (date) expenses.push({ id: 'e' + expenses.length, date, category, amount, note }); };
+      E(1, 'rent', 10000, 'Clinic rent');
+      E(5, 'utilities', 1800 + Math.round(rnd() * 600), 'Electricity & water');
+      E(25, 'salaries', 18000, 'Staff salaries');
+      E(12, 'supplies', 2500 + Math.round(rnd() * 2000), 'Medical consumables');
+      if (m % 2 === 0) E(18, 'marketing', 3000, 'Social media ads');
+      if (m === 3) E(9, 'equipment', 18000, 'Shockwave device maintenance');
+    }
+
+    return { version: DB_VERSION, users, appointments, records, messages, cases, settings, subscriptions, expenses };
   }
 
   /* ---------- Persistence ---------- */
@@ -328,6 +547,8 @@
   const Store = {
     SERVICES,
     service: id => SERVICES.find(s => s.id === id),
+    SYMPTOMS,
+    symptom: key => SYMPTOMS.find(x => x.key === key),
     ymd, addDays, toMin, toTime,
 
     reset() { db = seed(); persist(); },
@@ -430,7 +651,12 @@
         if (slot.past) throw err('past');
         if (slot.taken) throw err('slot_taken');
         if (db.appointments.some(a => a.patientId === patientId && a.date === date && a.time === time && isActive(a))) throw err('patient_busy');
-        const a = { id: uid('a'), patientId, doctorId, date, time, service, notes: notes || '', status: 'confirmed', createdAt: new Date().toISOString() };
+        const q = Store.billing.quote({ patientId, doctorId, service, date });
+        const a = {
+          id: uid('a'), patientId, doctorId, date, time, service, notes: notes || '', status: 'confirmed', createdAt: new Date().toISOString(),
+          kind: q.kind, price: q.due, payment: q.payment, subscriptionId: q.subscription ? q.subscription.id : null,
+          paid: q.payment === 'package', paidAt: q.payment === 'package' ? q.subscription.purchasedAt : null
+        };
         db.appointments.push(a);
         persist();
         return clone(a);
@@ -439,9 +665,74 @@
         const a = db.appointments.find(x => x.id === id);
         if (!a) throw err('not_found');
         a.status = status;
+        // cash is collected at the visit; a cancelled package visit frees its session automatically
+        if (status === 'completed' && a.payment === 'cash' && !a.paid) { a.paid = true; a.paidAt = ymd(new Date()); }
+        if (status === 'cancelled' && a.payment === 'cash') { a.paid = false; a.paidAt = null; }
+        persist();
+        return clone(a);
+      },
+      setPaid(id, paid) {
+        const a = db.appointments.find(x => x.id === id);
+        if (!a) throw err('not_found');
+        a.paid = !!paid;
+        a.paidAt = paid ? ymd(new Date()) : null;
         persist();
         return clone(a);
       }
+    },
+
+    /* ---------- Billing ---------- */
+    billing: {
+      settings: () => clone(db.settings),
+      updateSettings(patch) { Object.assign(db.settings, patch); persist(); return clone(db.settings); },
+      package: id => clone(db.settings.packages.find(p => p.id === id) || null),
+      /** Sessions already booked/used from a subscription (cancelled visits don't count). */
+      used: subId => db.appointments.filter(a => a.subscriptionId === subId && isActive(a)).length,
+      subscriptions(filter = {}) {
+        return clone(db.subscriptions.filter(s => !filter.patientId || s.patientId === filter.patientId)
+          .map(s => Object.assign({}, s, { used: Store.billing.used(s.id) }))
+          .sort((a, b) => b.purchasedAt.localeCompare(a.purchasedAt)));
+      },
+      /** Subscription that can cover a visit on `date` (still valid and has sessions left). */
+      activeSubscription(patientId, date = ymd(new Date())) {
+        const s = db.subscriptions
+          .filter(x => x.patientId === patientId && x.purchasedAt <= date && x.expiresAt >= date && Store.billing.used(x.id) < x.sessions)
+          .sort((a, b) => a.expiresAt.localeCompare(b.expiresAt))[0];
+        return s ? Object.assign(clone(s), { used: Store.billing.used(s.id) }) : null;
+      },
+      /** What a patient will pay for a visit: consultation on the first visit with a doctor, then per-service session price. */
+      quote({ patientId, doctorId, service, date }) {
+        const seen = !!patientId && db.appointments.some(a => a.patientId === patientId && a.doctorId === doctorId && isActive(a));
+        const kind = seen ? 'session' : 'consult';
+        const price = kind === 'consult' ? db.settings.consultFee : (db.settings.prices[service] || 0);
+        const subscription = patientId ? Store.billing.activeSubscription(patientId, date) : null;
+        return { kind, price, due: subscription ? 0 : price, payment: subscription ? 'package' : 'cash', subscription };
+      },
+      sell(patientId, packageId) {
+        const pk = db.settings.packages.find(p => p.id === packageId);
+        if (!pk || !Store.patients.get(patientId)) throw err('not_found');
+        const today = new Date();
+        const s = { id: uid('sub'), patientId, packageId, name: pk.name, sessions: pk.sessions, price: pk.price, purchasedAt: ymd(today), expiresAt: ymd(addDays(pk.days, today)) };
+        db.subscriptions.push(s);
+        // upcoming unpaid visits of this patient are now covered by the package
+        db.appointments.filter(a => a.patientId === patientId && a.status === 'confirmed' && a.payment === 'cash' && !a.paid && a.date >= s.purchasedAt && a.date <= s.expiresAt)
+          .forEach(a => { if (Store.billing.used(s.id) < s.sessions) Object.assign(a, { payment: 'package', subscriptionId: s.id, price: 0, paid: true, paidAt: s.purchasedAt }); });
+        persist();
+        return clone(s);
+      },
+      removeSubscription(id) {
+        db.appointments.forEach(a => {
+          if (a.subscriptionId !== id) return;
+          a.subscriptionId = null; a.payment = 'cash';
+          a.price = a.kind === 'consult' ? db.settings.consultFee : (db.settings.prices[a.service] || 0);
+          a.paid = false; a.paidAt = null;
+        });
+        db.subscriptions = db.subscriptions.filter(s => s.id !== id);
+        persist();
+      },
+      expenses: () => clone(db.expenses).sort((a, b) => b.date.localeCompare(a.date)),
+      addExpense(e) { const x = Object.assign({ id: uid('e') }, e); db.expenses.push(x); persist(); return clone(x); },
+      removeExpense(id) { db.expenses = db.expenses.filter(e => e.id !== id); persist(); }
     },
 
     records: {
@@ -453,6 +744,50 @@
         return clone(r);
       },
       remove(id) { db.records = db.records.filter(r => r.id !== id); persist(); }
+    },
+
+    /* ---------- Case files ---------- */
+    cases: {
+      list(filter = {}) {
+        return clone(db.cases
+          .filter(c => (!filter.patientId || c.patientId === filter.patientId) && (!filter.doctorId || c.doctorId === filter.doctorId))
+          .sort((a, b) => b.startDate.localeCompare(a.startDate)));
+      },
+      get: id => clone(db.cases.find(c => c.id === id) || null),
+      save(data) {
+        let c = db.cases.find(x => x.id === data.id);
+        if (c) Object.assign(c, data);
+        else { c = Object.assign({ status: 'active', tests: [], sessions: [], exam: {} }, data, { id: uid('c') }); db.cases.push(c); }
+        persist();
+        return clone(c);
+      },
+      remove(id) { db.cases = db.cases.filter(c => c.id !== id); persist(); },
+      _mut(id, fn) {
+        const c = db.cases.find(x => x.id === id);
+        if (!c) throw err('not_found');
+        fn(c);
+        persist();
+        return clone(c);
+      },
+      addTest: (id, test) => Store.cases._mut(id, c => { c.tests.push(Object.assign({}, test, { id: uid('t') })); }),
+      removeTest: (id, testId) => Store.cases._mut(id, c => { c.tests = c.tests.filter(x => x.id !== testId); }),
+      /** Adds or updates a session; sessions stay ordered by date and renumbered. */
+      saveSession: (id, s) => Store.cases._mut(id, c => {
+        const cur = s.id && c.sessions.find(x => x.id === s.id);
+        if (cur) Object.assign(cur, s);
+        else c.sessions.push(Object.assign({ feedback: null }, s, { id: uid('s') }));
+        c.sessions.sort((a, b) => a.date.localeCompare(b.date)).forEach((x, i) => { x.no = i + 1; });
+      }),
+      removeSession: (id, sid) => Store.cases._mut(id, c => {
+        c.sessions = c.sessions.filter(x => x.id !== sid);
+        c.sessions.forEach((x, i) => { x.no = i + 1; });
+      }),
+      /** Patient's own report for a session. */
+      feedback: (id, sid, fbk) => Store.cases._mut(id, c => {
+        const s = c.sessions.find(x => x.id === sid);
+        if (!s) throw err('not_found');
+        s.feedback = Object.assign({ date: ymd(new Date()) }, fbk);
+      })
     },
 
     messages: {

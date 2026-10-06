@@ -78,6 +78,27 @@
         data-time="${s.time}" data-label="${t('book.taken')}" ${s.taken ? 'disabled aria-disabled="true"' : ''}>${SPC.fmtTime(s.time)}</button>`).join('')}</div>` : '');
   }
 
+  /** Price block: what the visit costs, or that it's covered by the patient's prepaid package. */
+  function priceBox(u, d, s) {
+    if (!d || !s) return `<div class="price-box muted-box"><i class="fa-solid fa-tag"></i> ${t('book.priceHint')}</div>`;
+    const patientId = u && u.role === 'patient' ? u.id : null;
+    const q = Store.billing.quote({ patientId, doctorId: d.id, service: s.id, date: state.date || Store.ymd(new Date()) });
+    const kindRow = `<div class="summary-row"><span>${t('book.visitType')}</span><b>${t('kind.' + q.kind)}</b></div>`;
+    if (q.subscription) {
+      const left = q.subscription.sessions - q.subscription.used;
+      return kindRow + `<div class="price-box prepaid">
+        <div class="price-line"><span>${t('book.price')}</span><s>${SPC.money(q.price)}</s></div>
+        <div class="price-line total"><span>${t('book.due')}</span><b>${SPC.money(0)}</b></div>
+        <p><i class="fa-solid fa-circle-check"></i> ${t('book.prepaid').replace('{pkg}', esc(L(q.subscription.name)))}</p>
+        <small>${t('book.sessionsLeft').replace('{n}', `<b class="num">${left}</b>`).replace('{t}', `<span class="num">${q.subscription.sessions}</span>`)} · ${t('book.validUntil')} ${SPC.fmtDate(q.subscription.expiresAt)}</small>
+      </div>`;
+    }
+    return kindRow + `<div class="price-box">
+      <div class="price-line total"><span>${t('book.due')}</span><b>${SPC.money(q.due)}</b></div>
+      <small>${t('book.payAtClinic')}</small>
+    </div>`;
+  }
+
   function drawSummary() {
     const u = SPC.auth.current();
     const d = doctor();
@@ -88,7 +109,8 @@
       row('book.doctor', d ? esc(L(d.name)) : '') +
       row('book.service', s ? esc(L(s.title)) : '') +
       row('book.date', state.date ? SPC.fmtDate(state.date) : '') +
-      row('book.time', state.time ? `<span class="num">${SPC.fmtTime(state.time)}</span>` : '');
+      row('book.time', state.time ? `<span class="num">${SPC.fmtTime(state.time)}</span>` : '') +
+      priceBox(u, d, s);
     $('confirm-btn').disabled = !!(u && u.role !== 'patient');
   }
 
@@ -137,12 +159,14 @@
       return;
     }
     const d = doctor();
+    const booked = Store.appointments.list({ patientId: u.id }).find(a => a.doctorId === state.doctorId && a.date === state.date && a.time === state.time && a.status === 'confirmed');
     SPC.modal({
       title: `<i class="fa-solid fa-circle-check" style="color:var(--success)"></i> ${t('book.success')}`,
       body: `<p class="muted">${t('book.successText')}</p>
         <div class="summary-row"><span>${t('book.doctor')}</span><b>${esc(L(d.name))}</b></div>
         <div class="summary-row"><span>${t('book.date')}</span><b>${SPC.fmtDate(state.date)}</b></div>
-        <div class="summary-row" style="border:0"><span>${t('book.time')}</span><b class="num">${SPC.fmtTime(state.time)}</b></div>`,
+        <div class="summary-row"><span>${t('book.time')}</span><b class="num">${SPC.fmtTime(state.time)}</b></div>
+        <div class="summary-row" style="border:0"><span>${t('book.due')}</span><b>${booked && booked.payment === 'package' ? `${SPC.money(0)} — ${t('pay.package')}` : SPC.money(booked ? booked.price : 0)}</b></div>`,
       foot: `<a class="btn btn-primary" href="patient-dashboard.html#appointments">${t('book.myAppointments')}</a>`
     });
     state.time = '';

@@ -5,6 +5,7 @@
   const pane = n => document.querySelector(`[data-pane="${n}"]`);
   let apptFilter = 'upcoming';
   let search = '';
+  let caseScope = 'mine';
 
   function patientsTable(me) {
     const mine = Store.appointments.list({ doctorId: me.id });
@@ -34,6 +35,7 @@
     const upcoming = appts.filter(DASH.isUpcoming);
     const past = appts.filter(a => !DASH.isUpcoming(a)).reverse();
     const patientIds = new Set(appts.map(a => a.patientId));
+    const myCases = Store.cases.list({ doctorId: me.id });
 
     document.getElementById('dash-user').innerHTML = DASH.userBox(me);
 
@@ -43,7 +45,7 @@
         ${DASH.stat('fa-calendar-day', 'ic-blue', todays.length, 'stat.today')}
         ${DASH.stat('fa-calendar-check', 'ic-teal', upcoming.length, 'stat.upcoming')}
         ${DASH.stat('fa-hospital-user', 'ic-peach', patientIds.size, 'stat.patients')}
-        ${DASH.stat('fa-circle-check', 'ic-ink', appts.filter(a => a.status === 'completed').length, 'stat.completed')}
+        ${DASH.stat('fa-notes-medical', 'ic-ink', myCases.filter(c => c.status === 'active').length, 'stat.activeCases')}
       </div>
       <div class="panel">
         <div class="panel-head"><h2>${t('doc.todayTitle')}</h2></div>
@@ -52,7 +54,19 @@
       <div class="panel">
         <div class="panel-head"><h2>${t('dash.upcoming')}</h2></div>
         ${DASH.apptTable(upcoming.slice(0, 6), { who: 'patient', role: 'doctor' })}
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2><i class="fa-regular fa-comment-dots" style="color:var(--teal)"></i> ${t('case.latestFeedback')}</h2><button class="btn btn-ghost btn-sm" data-goto="cases">${t('dash.cases')}</button></div>
+        ${CASES.feedbackFeed(myCases)}
       </div>`;
+
+    pane('cases').innerHTML = `
+      <div class="dash-title"><h1>${t('dash.cases')}</h1>
+        <button class="btn btn-primary" data-new-case><i class="fa-solid fa-folder-plus"></i>${t('case.new')}</button></div>
+      <div class="panel" id="cases-list"></div>`;
+    CASES.mountList(document.getElementById('cases-list'),
+      () => Store.cases.list(caseScope === 'mine' ? { doctorId: me.id } : {}),
+      { showDoctor: caseScope !== 'mine', toolbar: `<div class="checks">${['mine', 'clinic'].map(x => `<button type="button" class="btn btn-sm ${caseScope === x ? 'btn-teal' : 'btn-ghost'}" data-scope="${x}">${t('case.scope.' + x)}</button>`).join('')}</div>` });
 
     const list = apptFilter === 'upcoming' ? upcoming : apptFilter === 'past' ? past : appts.slice().reverse();
     pane('appointments').innerHTML = `
@@ -92,6 +106,11 @@
   main.addEventListener('click', e => {
     const f = e.target.closest('[data-filter]');
     if (f) { apptFilter = f.dataset.filter; draw(); }
+    const sc = e.target.closest('[data-scope]');
+    if (sc) { caseScope = sc.dataset.scope; draw(); }
+    if (e.target.closest('[data-new-case]')) CASES.caseModal({ doctorId: me0.id, onSaved: c => { location.href = 'case.html?id=' + c.id; } });
+    const g = e.target.closest('[data-goto]');
+    if (g) showTab(g.dataset.goto);
   });
   main.addEventListener('input', e => {
     if (e.target.id !== 'pat-search') return;
@@ -99,6 +118,6 @@
     document.getElementById('pat-table').innerHTML = patientsTable(Store.doctors.get(me0.id));
   });
 
-  SPC.tabs(document.getElementById('dash'));
+  const showTab = SPC.tabs(document.getElementById('dash'));
   window.renderPage = draw;
 })();

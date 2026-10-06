@@ -85,6 +85,14 @@
       return `<img src="${esc(photo)}" alt="${esc(SPC.L(user.name))}" loading="lazy" onerror="this.outerHTML='<div class=&quot;initials-avatar&quot;>${ini}</div>'">`;
     },
     statusBadge: s => `<span class="badge badge-${s}">${SPC.t('status.' + s)}</span>`,
+    money: n => `<span class="money"><span class="num">${Math.round(n || 0).toLocaleString('en-US')}</span> <small class="cur">${SPC.t('cur.egp')}</small></span>`,
+    /** Price cell for a visit: package-covered, amount + paid/unpaid state */
+    payBadge(a) {
+      if (a.payment === 'package') return `<span class="badge badge-package"><i class="fa-solid fa-ticket"></i> ${SPC.t('pay.package')}</span>`;
+      if (a.price == null) return '—';
+      if (a.status === 'cancelled') return `<span class="muted">${SPC.money(a.price)}</span>`;
+      return `<b>${SPC.money(a.price)}</b> <span class="badge ${a.paid ? 'badge-paid' : 'badge-unpaid'}">${SPC.t(a.paid ? 'pay.paid' : 'pay.unpaid')}</span>`;
+    },
     empty: (msgKey = 'dash.noData', icon = 'fa-folder-open') => `<div class="empty"><i class="fa-regular ${icon}"></i>${SPC.t(msgKey)}</div>`,
 
     /* ---------- auth ---------- */

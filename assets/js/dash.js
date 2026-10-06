@@ -20,22 +20,27 @@ window.DASH = (function () {
     if (!list.length) return SPC.empty('dash.noData', 'fa-calendar');
     const showDoc = who === 'doctor' || who === 'both';
     const showPat = who === 'patient' || who === 'both';
+    const showPay = role !== 'doctor';
     const patCell = a => role === 'patient' ? esc(patName(a.patientId))
       : `<a href="patient-profile.html?id=${a.patientId}" style="color:var(--blue);font-weight:700">${esc(patName(a.patientId))}</a>`;
     const actions = a => {
       const btns = [];
       if (role !== 'patient' && a.status === 'confirmed') btns.push(`<button class="btn btn-success btn-sm" data-complete="${a.id}"><i class="fa-solid fa-check"></i>${t('appt.complete')}</button>`);
+      if (role === 'admin' && a.payment === 'cash' && a.status !== 'cancelled') btns.push(a.paid
+        ? `<button class="btn btn-ghost btn-sm" data-unpaid="${a.id}" title="${t('pay.markUnpaid')}"><i class="fa-solid fa-rotate-left"></i></button>`
+        : `<button class="btn btn-outline btn-sm" data-paid="${a.id}"><i class="fa-solid fa-money-bill-wave"></i>${t('pay.markPaid')}</button>`);
       if (isUpcoming(a)) btns.push(`<button class="btn btn-danger btn-sm" data-cancel="${a.id}"><i class="fa-solid fa-xmark"></i>${t('appt.cancel')}</button>`);
       return `<div class="actions">${btns.join('') || '—'}</div>`;
     };
     return `<div class="table-wrap"><table class="table">
-      <thead><tr><th>${t('th.date')}</th><th>${t('th.time')}</th>${showDoc ? `<th>${t('th.doctor')}</th>` : ''}${showPat ? `<th>${t('th.patient')}</th>` : ''}<th>${t('th.service')}</th><th>${t('th.status')}</th><th>${t('th.actions')}</th></tr></thead>
+      <thead><tr><th>${t('th.date')}</th><th>${t('th.time')}</th>${showDoc ? `<th>${t('th.doctor')}</th>` : ''}${showPat ? `<th>${t('th.patient')}</th>` : ''}<th>${t('th.service')}</th>${showPay ? `<th>${t('th.price')}</th>` : ''}<th>${t('th.status')}</th><th>${t('th.actions')}</th></tr></thead>
       <tbody>${list.map(a => `<tr>
         <td>${SPC.fmtDate(a.date)}</td>
         <td><span class="num">${SPC.fmtTime(a.time)}</span></td>
         ${showDoc ? `<td>${esc(docName(a.doctorId))}</td>` : ''}
         ${showPat ? `<td>${patCell(a)}</td>` : ''}
-        <td>${esc(svcName(a.service))}</td>
+        <td>${esc(svcName(a.service))}${a.kind ? `<small class="muted" style="display:block">${t('kind.' + a.kind)}</small>` : ''}</td>
+        ${showPay ? `<td>${SPC.payBadge(a)}</td>` : ''}
         <td>${SPC.statusBadge(a.status)}</td>
         <td>${actions(a)}</td>
       </tr>`).join('')}</tbody></table></div>`;
@@ -46,6 +51,12 @@ window.DASH = (function () {
     root.addEventListener('click', e => {
       const c = e.target.closest('[data-cancel]');
       const d = e.target.closest('[data-complete]');
+      const p = e.target.closest('[data-paid],[data-unpaid]');
+      if (p) {
+        Store.appointments.setPaid(p.dataset.paid || p.dataset.unpaid, !!p.dataset.paid);
+        SPC.toast(t('pay.updated'));
+        rerender();
+      }
       if (c) SPC.confirm(t('appt.cancelConfirm'), () => {
         Store.appointments.setStatus(c.dataset.cancel, 'cancelled');
         SPC.toast(t('appt.cancelled'));

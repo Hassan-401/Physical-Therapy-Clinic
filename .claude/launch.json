@@ -5,7 +5,8 @@
       "name": "spc-site",
       "runtimeExecutable": "node",
       "runtimeArgs": [".claude/static-server.js"],
-      "port": 5500
+      "port": 5500,
+      "autoPort": true
     }
   ]
 }

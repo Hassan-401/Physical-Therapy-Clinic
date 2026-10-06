@@ -19,16 +19,22 @@
       <div class="dash-user" id="dash-user"></div>
       <nav class="dash-nav">
         <button data-tab="overview"><i class="fa-solid fa-house"></i><span data-i18n="dash.overview"></span></button>
+        <button data-tab="finance"><i class="fa-solid fa-sack-dollar"></i><span data-i18n="dash.finance"></span></button>
+        <button data-tab="billing"><i class="fa-solid fa-tags"></i><span data-i18n="dash.billing"></span></button>
         <button data-tab="doctors"><i class="fa-solid fa-user-doctor"></i><span data-i18n="dash.doctors"></span></button>
         <button data-tab="patients"><i class="fa-solid fa-hospital-user"></i><span data-i18n="dash.patients"></span></button>
+        <button data-tab="cases"><i class="fa-solid fa-notes-medical"></i><span data-i18n="dash.cases"></span></button>
         <button data-tab="appointments"><i class="fa-regular fa-calendar"></i><span data-i18n="dash.appointments"></span></button>
         <button data-tab="messages"><i class="fa-regular fa-envelope"></i><span data-i18n="dash.messages"></span><span class="count" id="msg-count"></span></button>
       </nav>
     </aside>
     <div class="dash-main">
       <div data-pane="overview"></div>
+      <div data-pane="finance" class="hidden"></div>
+      <div data-pane="billing" class="hidden"></div>
       <div data-pane="doctors" class="hidden"></div>
       <div data-pane="patients" class="hidden"></div>
+      <div data-pane="cases" class="hidden"></div>
       <div data-pane="appointments" class="hidden"></div>
       <div data-pane="messages" class="hidden"></div>
     </div>
@@ -38,6 +44,8 @@
   <script src="assets/js/data.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/dash.js"></script>
+  <script src="assets/js/cases.js"></script>
+  <script src="assets/js/pages/finance.js"></script>
   <script src="assets/js/pages/admin.js"></script>
 </body>
 </html>
